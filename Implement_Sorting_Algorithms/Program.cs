@@ -4,37 +4,48 @@ Stopwatch stopwatch = Stopwatch.StartNew();
 
 // usage 100 thousand values
 int values = 100000;
-Console.WriteLine("Generate array of " + values.ToString("n") + " values");
+Console.WriteLine("Generate array of " + values.ToString("#,###") + " values");
 stopwatch.Start();
 int[] largeArr = GenerateRandomArray(values, 1, 1000);
 stopwatch.Stop();
 DisplayRuntime(stopwatch);
-int[] tempArr = (int[]) largeArr.Clone();
+int[] tempArr;
 
 // Write your function to test each algorithm here
 
+//bubble sort is slow because each value has to be moved through every
+//future value one at a time and is reapeated for each value in the array
+tempArr = CopyBaseArr(largeArr);
 stopwatch.Restart();
 bubbleSort(tempArr, tempArr.Length);
 Console.Write("\nAlgorithm: Bubble ");
 DisplayRuntime(stopwatch);
 
-//CopyBaseArr(largeArr, out tempArr);
-//stopwatch.Restart();
-//insertionSort(tempArr);
-//Console.Write("\nAlgorithm: Insertion ");
-//DisplayRuntime(stopwatch);
+//insertion sort is faster than bubble sort because each value in the array is only being moved 1 time,
+//but still has to shift values over when something is inserted
+tempArr = CopyBaseArr(largeArr);
+stopwatch.Restart();
+insertionSort(tempArr);
+Console.Write("\nAlgorithm: Insertion ");
+DisplayRuntime(stopwatch);
 
-//CopyBaseArr(largeArr, out tempArr);
-//stopwatch.Restart();
-//MergeSortAlgorithm(tempArr, tempArr.Length);
-//Console.Write("\nAlgorithm: Merge ");
-//DisplayRuntime(stopwatch);
+//merge sort divides the array into smaller arrays until they can be compared 1 by 1,
+//but it does not have to rearange the values within the array
+//because the array was partitioned into small arrays that are reorganized before reassembling
+tempArr = CopyBaseArr(largeArr);
+stopwatch.Restart();
+mergeSort(tempArr, 0, tempArr.Length - 1);
+Console.Write("\nAlgorithm: Merge ");
+DisplayRuntime(stopwatch);
 
-//CopyBaseArr(largeArr, out tempArr);
-//stopwatch.Restart();
-//QuickSort(tempArr, 0, tempArr.Length - 1);
-//Console.Write("\nAlgorithm: Quick ");
-//DisplayRuntime(stopwatch);
+//quick sort works like the insertion sort by moving values to the side of a comparison value,
+//but does it more efficiently because it is dividing the question on placement into smaller
+//and smaller arrays similar to the way that merge sort gets its efficiency
+tempArr = CopyBaseArr(largeArr);
+stopwatch.Restart();
+QuickSort(tempArr, 0, tempArr.Length - 1);
+Console.Write("\nAlgorithm: Quick ");
+DisplayRuntime(stopwatch);
 
 
 // Write individual functions for each algorithm here (Bubble, Insertion, Merge, and Quick sort)
@@ -64,28 +75,24 @@ static void bubbleSort(int[] arr, int n)
             break;
     }
 }
-static void insertionSort(int[] arr)
-    {
-        int n = arr.Length;
-        for (int i = 1; i < n; ++i)
-        {
-            int key = arr[i];
-            int j = i - 1;
-
-            /* Move elements of arr[0..i-1], that are
-               greater than key, to one position ahead
-               of their current position */
-            while (j >= 0 && arr[j] > key)
-            {
-                arr[j + 1] = arr[j];
-                j = j - 1;
-            }
-            arr[j + 1] = key;
-        }
-    }
-static void MergeSortAlgorithm(int[] arr, int n)
+void insertionSort(int[] arr)
 {
-    mergeSort(arr, 0, arr.Length - 1);
+    int n = arr.Length;
+    for (int i = 1; i < n; ++i)
+    {
+        int key = arr[i];
+        int j = i - 1;
+
+        /* Move elements of arr[0..i-1], that are
+           greater than key, to one position ahead
+           of their current position */
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
 }
 static void merge(int[] arr, int l, int m, int r)
 {
@@ -246,12 +253,8 @@ static void DisplayRuntime(Stopwatch stopwatch)
     Console.WriteLine("Time Taken: " + elapsedTime);
 }
 
-//static void CopyBaseArr(int[] Base, out int[] temp)
-//{
-    
-//    //temp = new int[Base.Length];
-//    //foreach (int i in Base)
-//    //{
-//    //    temp[i] = Base[i];
-//    //}
-//}
+//I made this so that each sorting algorithm is sorting through the same array
+static int[] CopyBaseArr(int[] Base)
+{
+    return (int[])Base.Clone();
+}
