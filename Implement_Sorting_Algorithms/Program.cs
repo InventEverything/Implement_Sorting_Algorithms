@@ -9,34 +9,36 @@ stopwatch.Start();
 int[] largeArr = GenerateRandomArray(values, 1, 1000);
 stopwatch.Stop();
 DisplayRuntime(stopwatch);
-int[] tempArr = new int[values];
-tempArr = CopyBaseArr(largeArr);
+int[] tempArr = (int[]) largeArr.Clone();
 
 // Write your function to test each algorithm here
 
 stopwatch.Restart();
-tempArr = bubbleSort(tempArr, tempArr.Length);
+bubbleSort(tempArr, tempArr.Length);
 Console.Write("\nAlgorithm: Bubble ");
 DisplayRuntime(stopwatch);
 
-stopwatch.Restart();
-tempArr = insertionSort(tempArr);
-Console.Write("\nAlgorithm: Insertion ");
-DisplayRuntime(stopwatch);
+//CopyBaseArr(largeArr, out tempArr);
+//stopwatch.Restart();
+//insertionSort(tempArr);
+//Console.Write("\nAlgorithm: Insertion ");
+//DisplayRuntime(stopwatch);
 
-stopwatch.Restart();
-tempArr = MergeSortAlgorithm(tempArr, tempArr.Length);
-Console.Write("\nAlgorithm: Merge ");
-DisplayRuntime(stopwatch);
+//CopyBaseArr(largeArr, out tempArr);
+//stopwatch.Restart();
+//MergeSortAlgorithm(tempArr, tempArr.Length);
+//Console.Write("\nAlgorithm: Merge ");
+//DisplayRuntime(stopwatch);
 
-stopwatch.Restart();
-tempArr = MergeSortAlgorithm(tempArr, tempArr.Length);
-Console.Write("\nAlgorithm: Quick ");
-DisplayRuntime(stopwatch);
+//CopyBaseArr(largeArr, out tempArr);
+//stopwatch.Restart();
+//QuickSort(tempArr, 0, tempArr.Length - 1);
+//Console.Write("\nAlgorithm: Quick ");
+//DisplayRuntime(stopwatch);
 
 
 // Write individual functions for each algorithm here (Bubble, Insertion, Merge, and Quick sort)
-static int[] bubbleSort(int[] arr, int n)
+static void bubbleSort(int[] arr, int n)
 {
     int i, j, temp;
     bool swapped;
@@ -61,9 +63,8 @@ static int[] bubbleSort(int[] arr, int n)
         if (swapped == false)
             break;
     }
-    return arr;
 }
-static int[] insertionSort(int[] arr)
+static void insertionSort(int[] arr)
     {
         int n = arr.Length;
         for (int i = 1; i < n; ++i)
@@ -81,12 +82,10 @@ static int[] insertionSort(int[] arr)
             }
             arr[j + 1] = key;
         }
-        return arr;
     }
-static int[] MergeSortAlgorithm(int[] arr, int n)
+static void MergeSortAlgorithm(int[] arr, int n)
 {
     mergeSort(arr, 0, arr.Length - 1);
-    return arr;
 }
 static void merge(int[] arr, int l, int m, int r)
 {
@@ -247,12 +246,12 @@ static void DisplayRuntime(Stopwatch stopwatch)
     Console.WriteLine("Time Taken: " + elapsedTime);
 }
 
-static int[] CopyBaseArr(int[] Base)
-{
-    int[] Result = new int[Base.Length];
-    foreach (int i in Base)
-    {
-        Result[i] = Base[i];
-    }
-    return Result;
-}
+//static void CopyBaseArr(int[] Base, out int[] temp)
+//{
+    
+//    //temp = new int[Base.Length];
+//    //foreach (int i in Base)
+//    //{
+//    //    temp[i] = Base[i];
+//    //}
+//}
